@@ -1,0 +1,21 @@
+{
+  "name": "api-facturahn",
+  "version": "1.0.0",
+  "description": "API de facturación electrónica y control de ventas",
+  "main": "index.js",
+  "scripts": {
+    "dev": "node --watch index.js"
+  },
+  "keywords": [],
+  "author": "Carlos Xavier López Mendoza - 20182030892",
+  "license": "ISC",
+  "type": "module",
+  "dependencies": {
+    "bcrypt": "^6.0.0",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "jsonwebtoken": "^9.0.0",
+    "mysql2": "^3.22.6",
+    "zod": "^4.4.3"
+  }
+}
