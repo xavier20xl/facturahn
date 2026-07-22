@@ -6,7 +6,7 @@ app.use(express.json())
 
 const PORT = process.env.PORT || 3000
 
-app.get('/api/v1', (req, res) => {
+app.get('/', (req, res) => {
     res.send('FacturaHN API')
 })
 

@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+  facturahn-mysql:
+    image: mysql:8.0
+    container_name: facturahn-mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: facturahn_db
+      MYSQL_USER: facturahn
+      MYSQL_PASSWORD: facturahn2026
+    ports:
+      - "3309:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+      - ./init:/docker-entrypoint-initdb.d
+    command: --default-authentication-plugin=mysql_native_password
+
+volumes:
+  db_data:
