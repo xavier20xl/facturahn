@@ -3,21 +3,21 @@
 
 -- Usuarios adicionales
 INSERT INTO `users` (`id`, `name`, `email`, `password_hash`, `role`) VALUES
-(4, 'Carlos Mendoza', 'carlos@factura.com', '$2b$10$EixZaYVK1fsbw1ZfbX3OXePaWxn96p36WQoeG6L6s58G8L85aY6Ke', 'CASHIER'),
-(5, 'Ana García', 'ana@factura.com', '$2b$10$EixZaYVK1fsbw1ZfbX3OXePaWxn96p36WQoeG6L6s58G8L85aY6Ke', 'CASHIER'),
-(6, 'Pedro Martínez', 'pedro@factura.com', '$2b$10$EixZaYVK1fsbw1ZfbX3OXePaWxn96p36WQoeG6L6s58G8L85aY6Ke', 'ADMIN'),
-(7, 'María López', 'maria.lopez@factura.com', '$2b$10$EixZaYVK1fsbw1ZfbX3OXePaWxn96p36WQoeG6L6s58G8L85aY6Ke', 'CASHIER'),
-(8, 'José Hernández', 'jose@factura.com', '$2b$10$EixZaYVK1fsbw1ZfbX3OXePaWxn96p36WQoeG6L6s58G8L85aY6Ke', 'CASHIER'),
-(9, 'Lucía Ramírez', 'lucia@factura.com', '$2b$10$EixZaYVK1fsbw1ZfbX3OXePaWxn96p36WQoeG6L6s58G8L85aY6Ke', 'CASHIER'),
-(10, 'Roberto Díaz', 'roberto@factura.com', '$2b$10$EixZaYVK1fsbw1ZfbX3OXePaWxn96p36WQoeG6L6s58G8L85aY6Ke', 'CASHIER'),
-(11, 'Sofía Torres', 'sofia@factura.com', '$2b$10$EixZaYVK1fsbw1ZfbX3OXePaWxn96p36WQoeG6L6s58G8L85aY6Ke', 'CASHIER'),
-(12, 'Diego Castillo', 'diego@factura.com', '$2b$10$EixZaYVK1fsbw1ZfbX3OXePaWxn96p36WQoeG6L6s58G8L85aY6Ke', 'ADMIN'),
-(13, 'Valentina Flores', 'valentina@factura.com', '$2b$10$EixZaYVK1fsbw1ZfbX3OXePaWxn96p36WQoeG6L6s58G8L85aY6Ke', 'CASHIER'),
-(14, 'Andrés Rivera', 'andres@factura.com', '$2b$10$EixZaYVK1fsbw1ZfbX3OXePaWxn96p36WQoeG6L6s58G8L85aY6Ke', 'CASHIER'),
-(15, 'Camila Ortiz', 'camila@factura.com', '$2b$10$EixZaYVK1fsbw1ZfbX3OXePaWxn96p36WQoeG6L6s58G8L85aY6Ke', 'CASHIER'),
-(16, 'Fernando Vega', 'fernando@factura.com', '$2b$10$EixZaYVK1fsbw1ZfbX3OXePaWxn96p36WQoeG6L6s58G8L85aY6Ke', 'ADMIN'),
-(17, 'Gabriela Cruz', 'gabriela@factura.com', '$2b$10$EixZaYVK1fsbw1ZfbX3OXePaWxn96p36WQoeG6L6s58G8L85aY6Ke', 'CASHIER'),
-(18, 'Héctor Medina', 'hector@factura.com', '$2b$10$EixZaYVK1fsbw1ZfbX3OXePaWxn96p36WQoeG6L6s58G8L85aY6Ke', 'CASHIER');
+(4, 'Carlos Mendoza', 'carlos@factura.com', '$2b$10$kMgYTkDiaOodeDt7byi9oOjayz2igFRzyjeQ24sMJUQXx6/9.OQMi', 'CASHIER'),
+(5, 'Ana García', 'ana@factura.com', '$2b$10$kMgYTkDiaOodeDt7byi9oOjayz2igFRzyjeQ24sMJUQXx6/9.OQMi', 'CASHIER'),
+(6, 'Pedro Martínez', 'pedro@factura.com', '$2b$10$kMgYTkDiaOodeDt7byi9oOjayz2igFRzyjeQ24sMJUQXx6/9.OQMi', 'ADMIN'),
+(7, 'María López', 'maria.lopez@factura.com', '$2b$10$kMgYTkDiaOodeDt7byi9oOjayz2igFRzyjeQ24sMJUQXx6/9.OQMi', 'CASHIER'),
+(8, 'José Hernández', 'jose@factura.com', '$2b$10$kMgYTkDiaOodeDt7byi9oOjayz2igFRzyjeQ24sMJUQXx6/9.OQMi', 'CASHIER'),
+(9, 'Lucía Ramírez', 'lucia@factura.com', '$2b$10$kMgYTkDiaOodeDt7byi9oOjayz2igFRzyjeQ24sMJUQXx6/9.OQMi', 'CASHIER'),
+(10, 'Roberto Díaz', 'roberto@factura.com', '$2b$10$kMgYTkDiaOodeDt7byi9oOjayz2igFRzyjeQ24sMJUQXx6/9.OQMi', 'CASHIER'),
+(11, 'Sofía Torres', 'sofia@factura.com', '$2b$10$kMgYTkDiaOodeDt7byi9oOjayz2igFRzyjeQ24sMJUQXx6/9.OQMi', 'CASHIER'),
+(12, 'Diego Castillo', 'diego@factura.com', '$2b$10$kMgYTkDiaOodeDt7byi9oOjayz2igFRzyjeQ24sMJUQXx6/9.OQMi', 'ADMIN'),
+(13, 'Valentina Flores', 'valentina@factura.com', '$2b$10$kMgYTkDiaOodeDt7byi9oOjayz2igFRzyjeQ24sMJUQXx6/9.OQMi', 'CASHIER'),
+(14, 'Andrés Rivera', 'andres@factura.com', '$2b$10$kMgYTkDiaOodeDt7byi9oOjayz2igFRzyjeQ24sMJUQXx6/9.OQMi', 'CASHIER'),
+(15, 'Camila Ortiz', 'camila@factura.com', '$2b$10$kMgYTkDiaOodeDt7byi9oOjayz2igFRzyjeQ24sMJUQXx6/9.OQMi', 'CASHIER'),
+(16, 'Fernando Vega', 'fernando@factura.com', '$2b$10$kMgYTkDiaOodeDt7byi9oOjayz2igFRzyjeQ24sMJUQXx6/9.OQMi', 'ADMIN'),
+(17, 'Gabriela Cruz', 'gabriela@factura.com', '$2b$10$kMgYTkDiaOodeDt7byi9oOjayz2igFRzyjeQ24sMJUQXx6/9.OQMi', 'CASHIER'),
+(18, 'Héctor Medina', 'hector@factura.com', '$2b$10$kMgYTkDiaOodeDt7byi9oOjayz2igFRzyjeQ24sMJUQXx6/9.OQMi', 'CASHIER');
 
 -- Productos adicionales
 INSERT INTO `products` (`id`, `code`, `name`, `price`, `stock`, `is_active`) VALUES

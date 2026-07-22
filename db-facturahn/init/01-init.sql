@@ -45,9 +45,9 @@ CREATE TABLE IF NOT EXISTS `invoice_details` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 INSERT INTO `users` (`id`, `name`, `email`, `password_hash`, `role`) VALUES
-(1, 'Admin Sistema', 'admin@factura.com', '$2b$10$EixZaYVK1fsbw1ZfbX3OXePaWxn96p36WQoeG6L6s58G8L85aY6Ke', 'ADMIN'),
-(2, 'Cajero Juan', 'juan@factura.com', '$2b$10$EixZaYVK1fsbw1ZfbX3OXePaWxn96p36WQoeG6L6s58G8L85aY6Ke', 'CASHIER'),
-(3, 'Cajera Maria', 'maria@factura.com', '$2b$10$EixZaYVK1fsbw1ZfbX3OXePaWxn96p36WQoeG6L6s58G8L85aY6Ke', 'CASHIER');
+(1, 'Admin Sistema', 'admin@factura.com', '$2b$10$kMgYTkDiaOodeDt7byi9oOjayz2igFRzyjeQ24sMJUQXx6/9.OQMi', 'ADMIN'),
+(2, 'Cajero Juan', 'juan@factura.com', '$2b$10$kMgYTkDiaOodeDt7byi9oOjayz2igFRzyjeQ24sMJUQXx6/9.OQMi', 'CASHIER'),
+(3, 'Cajera Maria', 'maria@factura.com', '$2b$10$kMgYTkDiaOodeDt7byi9oOjayz2igFRzyjeQ24sMJUQXx6/9.OQMi', 'CASHIER');
 
 INSERT INTO `products` (`id`, `code`, `name`, `price`, `stock`, `is_active`) VALUES
 (1, 'PROD-001', 'Laptop Student 15"', 450.00, 10, TRUE),

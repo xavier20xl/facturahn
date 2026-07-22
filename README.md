@@ -85,6 +85,13 @@ npm run dev
 | POST | `/api/v1/invoices` | ✓ | Crear una factura (transacción SQL) |
 | PATCH | `/api/v1/invoices/:id/void` | ✓ | Anular factura y restituir stock (Admin) |
 
+### Autenticación
+
+| Método | Ruta | Auth | Descripción |
+|--------|------|------|-------------|
+| POST | `/api/v1/auth/login` | ✗ | Iniciar sesión |
+| POST | `/api/v1/auth/register` | ✗ | Registrar nuevo usuario (CASHIER) |
+
 ## Arquitectura del proyecto
 
 El proyecto sigue el patrón **MVC** (Model-View-Controller):
