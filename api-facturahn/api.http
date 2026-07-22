@@ -49,6 +49,17 @@ Content-Type: application/json
     "stock": 5
 }
 
+### Productos - Crear - Error: stock como string
+POST http://localhost:3000/api/v1/products
+Content-Type: application/json
+
+{
+    "code": "PROD-104",
+    "name": "Test",
+    "price": 50,
+    "stock": "diez"
+}
+
 ### Productos - Actualizar stock (Admin) - Correcto
 PATCH http://localhost:3000/api/v1/products/1/stock
 Content-Type: application/json
@@ -69,6 +80,15 @@ Content-Type: application/json
 
 {
     "stock_to_add": "cinco"
+}
+
+### Productos - Actualizar stock - Error: campo extra
+PATCH http://localhost:3000/api/v1/products/1/stock
+Content-Type: application/json
+
+{
+    "stock_to_add": 5,
+    "extra": "no deberia"
 }
 
 ### ==================== FACTURAS ====================
@@ -92,6 +112,17 @@ Content-Type: application/json
     ]
 }
 
+### Facturas - Crear - Correcto (sin RTN, default CF)
+POST http://localhost:3000/api/v1/invoices
+Content-Type: application/json
+
+{
+    "customer_name": "Cliente Sin RTN",
+    "items": [
+        { "product_id": 3, "quantity": 2 }
+    ]
+}
+
 ### Facturas - Crear - Error: sin items
 POST http://localhost:3000/api/v1/invoices
 Content-Type: application/json
@@ -111,6 +142,40 @@ Content-Type: application/json
     ]
 }
 
+### Facturas - Crear - Error: product_id como string
+POST http://localhost:3000/api/v1/invoices
+Content-Type: application/json
+
+{
+    "customer_name": "Test",
+    "items": [
+        { "product_id": "uno", "quantity": 1 }
+    ]
+}
+
+### Facturas - Crear - Error: quantity negativa
+POST http://localhost:3000/api/v1/invoices
+Content-Type: application/json
+
+{
+    "customer_name": "Test",
+    "items": [
+        { "product_id": 1, "quantity": -1 }
+    ]
+}
+
+### Facturas - Crear - Error: campo extra en body
+POST http://localhost:3000/api/v1/invoices
+Content-Type: application/json
+
+{
+    "customer_name": "Test",
+    "items": [
+        { "product_id": 1, "quantity": 1 }
+    ],
+    "extra": "no deberia"
+}
+
 ### Facturas - Crear - Error: stock insuficiente
 POST http://localhost:3000/api/v1/invoices
 Content-Type: application/json
@@ -122,5 +187,22 @@ Content-Type: application/json
     ]
 }
 
-### Facturas - Anular (Admin)
+### Facturas - Crear - Error: producto inexistente
+POST http://localhost:3000/api/v1/invoices
+Content-Type: application/json
+
+{
+    "customer_name": "Test",
+    "items": [
+        { "product_id": 999, "quantity": 1 }
+    ]
+}
+
+### Facturas - Anular (Admin) - Correcto
 PATCH http://localhost:3000/api/v1/invoices/1/void
+
+### Facturas - Anular - Error: factura ya anulada
+PATCH http://localhost:3000/api/v1/invoices/5/void
+
+### Facturas - Anular - Error: factura inexistente
+PATCH http://localhost:3000/api/v1/invoices/999/void

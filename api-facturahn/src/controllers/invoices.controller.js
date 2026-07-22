@@ -1,5 +1,6 @@
 import InvoicesModel from '../models/invoices.model.js'
 import { jsonResponse } from '../helpers/json_response.js'
+import { validateCreateInvoice } from '../schemas/invoices.schema.js'
 
 export const getAllInvoices = async (req, res) => {
 
@@ -38,13 +39,19 @@ export const createInvoice = async (req, res) => {
     const payload = req.body
     const userId = req.user?.id || 1
 
-    if (!payload.items || payload.items.length === 0) {
-        return res.status(400).json(jsonResponse({ status: 400, message: 'La factura debe tener al menos un item', data: null }))
+    const { success, data, error } = validateCreateInvoice(payload)
+
+    if (!success) {
+        return res.status(400).json(jsonResponse({
+            status: 400,
+            message: 'No pasó las validaciones',
+            data: JSON.parse(error.message)
+        }))
     }
 
     try {
 
-        const invoice = await InvoicesModel.createInvoice(payload, userId)
+        const invoice = await InvoicesModel.createInvoice(data, userId)
 
         return res.status(201).json(jsonResponse({ status: 201, message: 'Factura creada', data: invoice }))
     } catch (e) {

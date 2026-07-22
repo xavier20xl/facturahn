@@ -138,6 +138,14 @@ FacturaHN/
 - **MySQL2** — Conexión a base de datos
 - **Docker** — Contenedor para MySQL
 
+## Validaciones
+
+Todos los recursos validan sus datos con **Zod** antes de llegar al modelo:
+
+- **Productos:** `code`, `name`, `price` (positivo), `stock` (entero >= 0). Esquemas `.strict()`: campos extra son rechazados.
+- **Facturas:** `customer_name`, `items` (mínimo 1), cada item con `product_id` y `quantity` (enteros positivos).
+- **Stock:** `stock_to_add` debe ser un número entero.
+
 ## Reglas de negocio
 
 - **Transacción Atómica:** La creación de facturas se procesa dentro de una transacción SQL (BEGIN...COMMIT/ROLLBACK).
