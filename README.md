@@ -40,3 +40,13 @@ cd api-facturahn
 npm install
 npm run dev
 ```
+
+## Endpoints
+
+### Productos
+
+| Método | Ruta | Auth | Descripción |
+|---|---|---|---|
+| GET | `/api/v1/products` | ✗ | Lista productos activos |
+| POST | `/api/v1/products` | ✓ | Crear producto (Admin) |
+| PATCH | `/api/v1/products/:id/stock` | ✓ | Actualizar stock (Admin) |

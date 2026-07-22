@@ -1,5 +1,24 @@
 ### Root
-GET http://localhost:3000/api/v1
+GET http://localhost:3000
 
-### Health Check
-GET http://localhost:3000/api/v1/health
+### Productos - Listar todos
+GET http://localhost:3000/api/v1/products
+
+### Productos - Crear (Admin)
+POST http://localhost:3000/api/v1/products
+Content-Type: application/json
+
+{
+    "code": "PROD-100",
+    "name": "Producto de prueba",
+    "price": 99.99,
+    "stock": 10
+}
+
+### Productos - Actualizar stock (Admin)
+PATCH http://localhost:3000/api/v1/products/1/stock
+Content-Type: application/json
+
+{
+    "stock_to_add": 5
+}
