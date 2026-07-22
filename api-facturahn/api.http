@@ -22,3 +22,25 @@ Content-Type: application/json
 {
     "stock_to_add": 5
 }
+
+### Facturas - Listar todas
+GET http://localhost:3000/api/v1/invoices
+
+### Facturas - Obtener por ID
+GET http://localhost:3000/api/v1/invoices/1
+
+### Facturas - Crear
+POST http://localhost:3000/api/v1/invoices
+Content-Type: application/json
+
+{
+    "customer_name": "Cliente Prueba",
+    "customer_rtn_id": "08011990123456",
+    "items": [
+        { "product_id": 1, "quantity": 1 },
+        { "product_id": 2, "quantity": 3 }
+    ]
+}
+
+### Facturas - Anular (Admin)
+PATCH http://localhost:3000/api/v1/invoices/1/void

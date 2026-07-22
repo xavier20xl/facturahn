@@ -1,52 +1,152 @@
-# FacturaHN
+# PROYECTO - IS711 II PAC 2026
 
-API de facturación electrónica y control de ventas.
+API de facturación electrónica y control de ventas **(FacturaHN)**
 
-## Estructura del proyecto
+## Responsable
 
+Carlos Xavier López Mendoza — 20182030892
+
+## Recursos necesarios
+
+- VS Code
+- Git
+- Node.js (v24+)
+- Docker Desktop
+
+## Para clonar el repositorio
+
+Ejecutar el siguiente comando desde la consola de su computadora (después de haber instalado git):
+
+```bash
+git clone https://github.com/xavier20xl/facturahn.git
 ```
-FacturaHN/
-├── api-facturahn/    # API REST con Express
-└── db-facturahn/     # Base de datos MySQL (Docker)
-```
 
-## Configuración
+## Para correr el servidor (con Docker)
 
-### Base de datos
+Paso 1 — Abrir Docker Desktop y esperar a que esté corriendo.
+
+Paso 2 — Levantar el contenedor de MySQL:
 
 ```bash
 cd db-facturahn
 docker compose up -d
+cd ..
 ```
 
-### Variables de entorno
+Paso 3 — Instalar dependencias:
 
-Copiar `.env.example` a `.env` y configurar:
-
+```bash
+cd api-facturahn
+npm install
 ```
+
+Paso 4 — Configurar las variables de entorno:
+
+```bash
+cp .env.example .env
+```
+
+Luego editar el archivo `.env` con los valores necesarios:
+
+```env
 PORT=3000
+
 DB_HOST=localhost
 DB_USER=facturahn
 DB_PASSWORD=facturahn2026
 DB_NAME=facturahn_db
 DB_PORT=3309
+
 JWT_SECRET=facturahn_secret_key_2026
 ```
 
-### Ejecutar
+Paso 5 — Arrancar el servidor en modo desarrollo:
 
 ```bash
-cd api-facturahn
-npm install
 npm run dev
 ```
 
-## Endpoints
+## Endpoints disponibles
 
 ### Productos
 
 | Método | Ruta | Auth | Descripción |
-|---|---|---|---|
-| GET | `/api/v1/products` | ✗ | Lista productos activos |
-| POST | `/api/v1/products` | ✓ | Crear producto (Admin) |
+|--------|------|------|-------------|
+| GET | `/api/v1/products` | ✗ | Listar productos activos |
+| POST | `/api/v1/products` | ✓ | Crear un producto (Admin) |
 | PATCH | `/api/v1/products/:id/stock` | ✓ | Actualizar stock (Admin) |
+
+### Facturas
+
+| Método | Ruta | Auth | Descripción |
+|--------|------|------|-------------|
+| GET | `/api/v1/invoices` | ✓ | Listar facturas |
+| GET | `/api/v1/invoices/:id` | ✓ | Obtener factura por ID con detalle |
+| POST | `/api/v1/invoices` | ✓ | Crear una factura (transacción SQL) |
+| PATCH | `/api/v1/invoices/:id/void` | ✓ | Anular factura y restituir stock (Admin) |
+
+## Arquitectura del proyecto
+
+El proyecto sigue el patrón **MVC** (Model-View-Controller):
+
+```
+FacturaHN/
+├── api-facturahn/            # API REST (Express + MVC + Zod)
+│   ├── src/
+│   │   ├── controllers/
+│   │   ├── models/
+│   │   ├── routes/
+│   │   ├── schemas/
+│   │   ├── middlewares/
+│   │   ├── helpers/
+│   │   └── db/
+│   └── index.js
+├── db-facturahn/             # Base de datos MySQL (Docker)
+│   ├── init/
+│   │   ├── 01-init.sql               # Estructura y semillas
+│   │   └── 02-seed-data.sql           # Datos adicionales
+│   └── docker-compose.yml
+├── .gitignore
+└── README.md
+```
+
+## Códigos de Estado HTTP
+
+### Códigos de Éxito (2xx)
+
+- **200 OK** — Solicitud exitosa, datos devueltos
+- **201 Created** — Recurso creado exitosamente
+
+### Códigos de Error del Cliente (4xx)
+
+- **400 Bad Request** — Datos de entrada inválidos o faltantes
+- **401 Unauthorized** — Token de autenticación faltante o inválido
+- **404 Not Found** — Recurso no encontrado
+- **409 Conflict** — Conflicto (ej: factura ya anulada)
+
+### Códigos de Error del Servidor (5xx)
+
+- **500 Internal Server Error** — Error interno del servidor
+
+## Tecnologías utilizadas
+
+- **Express** — Framework web para Node.js
+- **dotenv** — Manejo de variables de entorno
+- **Zod** — Validación de esquemas
+- **bcrypt** — Hash de contraseñas
+- **jsonwebtoken** — Tokens JWT
+- **MySQL2** — Conexión a base de datos
+- **Docker** — Contenedor para MySQL
+
+## Reglas de negocio
+
+- **Transacción Atómica:** La creación de facturas se procesa dentro de una transacción SQL (BEGIN...COMMIT/ROLLBACK).
+- **Validación de Stock:** Antes de emitir una factura se verifica que cada producto tenga stock suficiente.
+- **Cálculo en Servidor:** Subtotal, ISV (15%) y Total se calculan automáticamente en el servidor.
+- **Anulación y Restitución:** Al anular una factura se restituye el stock de cada producto mediante una transacción SQL.
+
+## Middlewares
+
+### isAuth
+
+Middleware de autenticación que valida la presencia de encabezados de autorización en las peticiones. Requerido para endpoints de escritura (POST, PATCH).
