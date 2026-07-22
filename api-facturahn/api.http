@@ -1,10 +1,12 @@
 ### Root
 GET http://localhost:3000
 
+### ==================== PRODUCTOS ====================
+
 ### Productos - Listar todos
 GET http://localhost:3000/api/v1/products
 
-### Productos - Crear (Admin)
+### Productos - Crear (Admin) - Correcto
 POST http://localhost:3000/api/v1/products
 Content-Type: application/json
 
@@ -15,7 +17,39 @@ Content-Type: application/json
     "stock": 10
 }
 
-### Productos - Actualizar stock (Admin)
+### Productos - Crear - Error: campo faltante (sin name)
+POST http://localhost:3000/api/v1/products
+Content-Type: application/json
+
+{
+    "code": "PROD-101",
+    "price": 50
+}
+
+### Productos - Crear - Error: campo extra (strict)
+POST http://localhost:3000/api/v1/products
+Content-Type: application/json
+
+{
+    "code": "PROD-102",
+    "name": "Test",
+    "price": 50,
+    "stock": 5,
+    "extra": "no deberia estar"
+}
+
+### Productos - Crear - Error: precio negativo
+POST http://localhost:3000/api/v1/products
+Content-Type: application/json
+
+{
+    "code": "PROD-103",
+    "name": "Test",
+    "price": -10,
+    "stock": 5
+}
+
+### Productos - Actualizar stock (Admin) - Correcto
 PATCH http://localhost:3000/api/v1/products/1/stock
 Content-Type: application/json
 
@@ -23,13 +57,29 @@ Content-Type: application/json
     "stock_to_add": 5
 }
 
+### Productos - Actualizar stock - Error: body vacío
+PATCH http://localhost:3000/api/v1/products/1/stock
+Content-Type: application/json
+
+{}
+
+### Productos - Actualizar stock - Error: string en vez de número
+PATCH http://localhost:3000/api/v1/products/1/stock
+Content-Type: application/json
+
+{
+    "stock_to_add": "cinco"
+}
+
+### ==================== FACTURAS ====================
+
 ### Facturas - Listar todas
 GET http://localhost:3000/api/v1/invoices
 
 ### Facturas - Obtener por ID
 GET http://localhost:3000/api/v1/invoices/1
 
-### Facturas - Crear
+### Facturas - Crear - Correcto
 POST http://localhost:3000/api/v1/invoices
 Content-Type: application/json
 
@@ -39,6 +89,36 @@ Content-Type: application/json
     "items": [
         { "product_id": 1, "quantity": 1 },
         { "product_id": 2, "quantity": 3 }
+    ]
+}
+
+### Facturas - Crear - Error: sin items
+POST http://localhost:3000/api/v1/invoices
+Content-Type: application/json
+
+{
+    "customer_name": "Cliente Prueba",
+    "items": []
+}
+
+### Facturas - Crear - Error: sin customer_name
+POST http://localhost:3000/api/v1/invoices
+Content-Type: application/json
+
+{
+    "items": [
+        { "product_id": 1, "quantity": 1 }
+    ]
+}
+
+### Facturas - Crear - Error: stock insuficiente
+POST http://localhost:3000/api/v1/invoices
+Content-Type: application/json
+
+{
+    "customer_name": "Cliente Prueba",
+    "items": [
+        { "product_id": 1, "quantity": 999 }
     ]
 }
 
