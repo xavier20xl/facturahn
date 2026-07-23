@@ -46,7 +46,11 @@ Paso 4 — Configurar las variables de entorno:
 cp .env.example .env
 ```
 
-Luego editar el archivo `.env` con los valores necesarios:
+Luego editar el archivo `.env` con los valores necesarios. Para el `JWT_SECRET`, generar una clave aleatoria con el siguiente comando y pegarla en el archivo:
+
+```bash
+node -e "console.log(require('crypto').randomBytes(48).toString('hex'))"
+```
 
 ```env
 PORT=3000
