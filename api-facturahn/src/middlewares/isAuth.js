@@ -1,12 +1,29 @@
+import jwt from 'jsonwebtoken'
+import { jsonResponse } from '../helpers/json_response.js'
+
 export const isAuth = async (req, res, next) => {
 
-    // capturar la req y obtener los encabezados
-    console.log(req.headers)
+    try {
 
-    // obtener el Authorization
-    // validar la data
-    // rechazar o continuar en funcion de los resultados
+        const authHeader = req.headers.authorization
 
-    // puede continuar
-    next()
+        if (!authHeader) {
+            return res.status(401).json(jsonResponse({ status: 401, message: 'Token no proporcionado', data: null }))
+        }
+
+        const [bearer, token] = authHeader.split(' ')
+
+        if (bearer !== 'Bearer' || !token) {
+            return res.status(401).json(jsonResponse({ status: 401, message: 'Formato de token inválido', data: null }))
+        }
+
+        const decoded = jwt.verify(token, process.env.JWT_SECRET)
+
+        req.user = decoded
+
+        next()
+    } catch (e) {
+
+        return res.status(401).json(jsonResponse({ status: 401, message: 'Token inválido o expirado', data: null }))
+    }
 }
