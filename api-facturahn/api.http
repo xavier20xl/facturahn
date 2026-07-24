@@ -41,13 +41,25 @@ Content-Type: application/json
     "password": "123456"
 }
 
-### Auth - Registrar nuevo usuario
+### Auth - Registrar nuevo usuario (Admin)
 POST http://localhost:3000/api/v1/auth/register
+Authorization: Bearer {{loginAdmin.response.body.data.token}}
 Content-Type: application/json
 
 {
     "name": "Nuevo Cajero",
-    "email": "nuevo@factura.com",
+    "email": "nuevo1@factura.com",
+    "password": "123456"
+}
+
+### Auth - Registrar - Error 403: Cajero sin permisos
+POST http://localhost:3000/api/v1/auth/register
+Authorization: Bearer {{loginCajero.response.body.data.token}}
+Content-Type: application/json
+
+{
+    "name": "Intento Cajero",
+    "email": "nuevo2@factura.com",
     "password": "123456"
 }
 

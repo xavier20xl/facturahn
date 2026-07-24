@@ -94,7 +94,7 @@ npm run dev
 | Método | Ruta | Auth | Descripción |
 |--------|------|------|-------------|
 | POST | `/api/v1/auth/login` | ✗ | Iniciar sesión (devuelve JWT token + datos del usuario) |
-| POST | `/api/v1/auth/register` | ✗ | Registrar nuevo usuario (rol CASHIER por defecto) |
+| POST | `/api/v1/auth/register` | ✓ (ADMIN) | Registrar nuevo usuario (rol CASHIER por defecto) |
 
 ## Arquitectura del proyecto
 
