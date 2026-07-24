@@ -74,27 +74,27 @@ npm run dev
 
 ### Productos
 
-| Método | Ruta | Auth | Descripción |
-|--------|------|------|-------------|
-| GET | `/api/v1/products` | ✗ | Listar productos activos |
-| POST | `/api/v1/products` | ✓ | Crear un producto (Admin) |
-| PATCH | `/api/v1/products/:id/stock` | ✓ | Actualizar stock (Admin) |
+| Método | Ruta | Auth | Rol | Descripción |
+|--------|------|------|-----|-------------|
+| GET | `/api/v1/products` | ✗ | — | Listar productos activos |
+| POST | `/api/v1/products` | ✓ | ADMIN | Crear un producto |
+| PATCH | `/api/v1/products/:id/stock` | ✓ | ADMIN | Actualizar stock |
 
 ### Facturas
 
-| Método | Ruta | Auth | Descripción |
-|--------|------|------|-------------|
-| GET | `/api/v1/invoices` | ✓ | Listar facturas |
-| GET | `/api/v1/invoices/:id` | ✓ | Obtener factura por ID con detalle |
-| POST | `/api/v1/invoices` | ✓ | Crear una factura (transacción SQL) |
-| PATCH | `/api/v1/invoices/:id/void` | ✓ | Anular factura y restituir stock (Admin) |
+| Método | Ruta | Auth | Rol | Descripción |
+|--------|------|------|-----|-------------|
+| GET | `/api/v1/invoices` | ✓ | * | Listar facturas |
+| GET | `/api/v1/invoices/:id` | ✓ | * | Obtener factura por ID con detalle |
+| POST | `/api/v1/invoices` | ✓ | * | Crear una factura (transacción SQL) |
+| PATCH | `/api/v1/invoices/:id/void` | ✓ | ADMIN | Anular factura y restituir stock |
 
 ### Autenticación
 
 | Método | Ruta | Auth | Descripción |
 |--------|------|------|-------------|
-| POST | `/api/v1/auth/login` | ✗ | Iniciar sesión |
-| POST | `/api/v1/auth/register` | ✗ | Registrar nuevo usuario (CASHIER) |
+| POST | `/api/v1/auth/login` | ✗ | Iniciar sesión (devuelve JWT token + datos del usuario) |
+| POST | `/api/v1/auth/register` | ✗ | Registrar nuevo usuario (rol CASHIER por defecto) |
 
 ## Arquitectura del proyecto
 
@@ -131,8 +131,9 @@ FacturaHN/
 ### Códigos de Error del Cliente (4xx)
 
 - **400 Bad Request** — Datos de entrada inválidos o faltantes
-- **401 Unauthorized** — Token de autenticación faltante o inválido
-- **404 Not Found** — Recurso no encontrado
+- **401 Unauthorized** — Token de autenticación faltante, inválido, expirado o contraseña incorrecta
+- **403 Forbidden** — Token válido pero sin permisos suficientes para el rol
+- **404 Not Found** — Usuario o recurso no encontrado
 - **409 Conflict** — Conflicto (ej: factura ya anulada)
 
 ### Códigos de Error del Servidor (5xx)
@@ -164,8 +165,38 @@ Todos los recursos validan sus datos con **Zod** antes de llegar al modelo:
 - **Cálculo en Servidor:** Subtotal, ISV (15%) y Total se calculan automáticamente en el servidor.
 - **Anulación y Restitución:** Al anular una factura se restituye el stock de cada producto mediante una transacción SQL.
 
+## Autenticación con JWT
+
+La API utiliza tokens JWT (JSON Web Tokens) para proteger los endpoints. El flujo es el siguiente:
+
+1. El cliente envía `email` y `password` a `POST /api/v1/auth/login`
+2. El servidor verifica la contraseña con `bcrypt.compare()` contra el hash almacenado
+3. Si es correcto, firma un token JWT con `jwt.sign()` que contiene `{ user, id, role }`
+4. El cliente debe enviar ese token en el header `Authorization: Bearer <token>` en cada request protegido
+5. El middleware `isAuth` verifica el token con `jwt.verify()`. Si es válido, adjunta los datos a `req.user`
+6. El middleware `hasRole` (opcional) verifica que `req.user.role` esté entre los roles permitidos
+
+Códigos de respuesta:
+- **404** — Usuario no encontrado en login
+- **401** — Contraseña incorrecta, token faltante, inválido o expirado
+- **403** — Token válido pero rol sin permisos
+
 ## Middlewares
 
 ### isAuth
 
-Middleware de autenticación que valida la presencia de encabezados de autorización en las peticiones. Requerido para endpoints de escritura (POST, PATCH).
+Middleware de autenticación requerido en endpoints protegidos. Extrae el header `Authorization`, verifica el formato `Bearer <token>`, usa `jwt.verify(token, JWT_SECRET)` para validar la firma y expiración, y adjunta el payload decodificado a `req.user`. Si algo falla, responde con **401**.
+
+### hasRole
+
+Middleware que se ejecuta **después** de `isAuth`. Recibe uno o más roles usando el **rest parameter** (`...roles`) y verifica que `req.user.role` esté incluido. Si no, responde con **403**.
+
+```js
+// Ejemplo: solo administradores pueden crear productos
+productsRouter.post('/', isAuth, hasRole('ADMIN'), createProduct)
+
+// Ejemplo: cualquier autenticado puede listar facturas
+invoicesRouter.get('/', isAuth, getAllInvoices)
+```
+
+El token expira después de 8 horas (`expiresIn: '8h'`).

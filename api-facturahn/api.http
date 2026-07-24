@@ -1,215 +1,10 @@
 ### Root
 GET http://localhost:3000
 
-### ==================== PRODUCTOS ====================
+### ==================== AUTENTICACIÓN ====================
 
-### Productos - Listar todos
-GET http://localhost:3000/api/v1/products
-
-### Productos - Crear (Admin) - Correcto
-POST http://localhost:3000/api/v1/products
-Content-Type: application/json
-
-{
-    "code": "PROD-100",
-    "name": "Producto de prueba",
-    "price": 99.99,
-    "stock": 10
-}
-
-### Productos - Crear - Error: campo faltante (sin name)
-POST http://localhost:3000/api/v1/products
-Content-Type: application/json
-
-{
-    "code": "PROD-101",
-    "price": 50
-}
-
-### Productos - Crear - Error: campo extra (strict)
-POST http://localhost:3000/api/v1/products
-Content-Type: application/json
-
-{
-    "code": "PROD-102",
-    "name": "Test",
-    "price": 50,
-    "stock": 5,
-    "extra": "no deberia estar"
-}
-
-### Productos - Crear - Error: precio negativo
-POST http://localhost:3000/api/v1/products
-Content-Type: application/json
-
-{
-    "code": "PROD-103",
-    "name": "Test",
-    "price": -10,
-    "stock": 5
-}
-
-### Productos - Crear - Error: stock como string
-POST http://localhost:3000/api/v1/products
-Content-Type: application/json
-
-{
-    "code": "PROD-104",
-    "name": "Test",
-    "price": 50,
-    "stock": "diez"
-}
-
-### Productos - Actualizar stock (Admin) - Correcto
-PATCH http://localhost:3000/api/v1/products/1/stock
-Content-Type: application/json
-
-{
-    "stock_to_add": 5
-}
-
-### Productos - Actualizar stock - Error: body vacío
-PATCH http://localhost:3000/api/v1/products/1/stock
-Content-Type: application/json
-
-{}
-
-### Productos - Actualizar stock - Error: string en vez de número
-PATCH http://localhost:3000/api/v1/products/1/stock
-Content-Type: application/json
-
-{
-    "stock_to_add": "cinco"
-}
-
-### Productos - Actualizar stock - Error: campo extra
-PATCH http://localhost:3000/api/v1/products/1/stock
-Content-Type: application/json
-
-{
-    "stock_to_add": 5,
-    "extra": "no deberia"
-}
-
-### ==================== FACTURAS ====================
-
-### Facturas - Listar todas
-GET http://localhost:3000/api/v1/invoices
-
-### Facturas - Obtener por ID
-GET http://localhost:3000/api/v1/invoices/1
-
-### Facturas - Crear - Correcto
-POST http://localhost:3000/api/v1/invoices
-Content-Type: application/json
-
-{
-    "customer_name": "Cliente Prueba",
-    "customer_rtn_id": "08011990123456",
-    "items": [
-        { "product_id": 1, "quantity": 1 },
-        { "product_id": 2, "quantity": 3 }
-    ]
-}
-
-### Facturas - Crear - Correcto (sin RTN, default CF)
-POST http://localhost:3000/api/v1/invoices
-Content-Type: application/json
-
-{
-    "customer_name": "Cliente Sin RTN",
-    "items": [
-        { "product_id": 3, "quantity": 2 }
-    ]
-}
-
-### Facturas - Crear - Error: sin items
-POST http://localhost:3000/api/v1/invoices
-Content-Type: application/json
-
-{
-    "customer_name": "Cliente Prueba",
-    "items": []
-}
-
-### Facturas - Crear - Error: sin customer_name
-POST http://localhost:3000/api/v1/invoices
-Content-Type: application/json
-
-{
-    "items": [
-        { "product_id": 1, "quantity": 1 }
-    ]
-}
-
-### Facturas - Crear - Error: product_id como string
-POST http://localhost:3000/api/v1/invoices
-Content-Type: application/json
-
-{
-    "customer_name": "Test",
-    "items": [
-        { "product_id": "uno", "quantity": 1 }
-    ]
-}
-
-### Facturas - Crear - Error: quantity negativa
-POST http://localhost:3000/api/v1/invoices
-Content-Type: application/json
-
-{
-    "customer_name": "Test",
-    "items": [
-        { "product_id": 1, "quantity": -1 }
-    ]
-}
-
-### Facturas - Crear - Error: campo extra en body
-POST http://localhost:3000/api/v1/invoices
-Content-Type: application/json
-
-{
-    "customer_name": "Test",
-    "items": [
-        { "product_id": 1, "quantity": 1 }
-    ],
-    "extra": "no deberia"
-}
-
-### Facturas - Crear - Error: stock insuficiente
-POST http://localhost:3000/api/v1/invoices
-Content-Type: application/json
-
-{
-    "customer_name": "Cliente Prueba",
-    "items": [
-        { "product_id": 1, "quantity": 999 }
-    ]
-}
-
-### Facturas - Crear - Error: producto inexistente
-POST http://localhost:3000/api/v1/invoices
-Content-Type: application/json
-
-{
-    "customer_name": "Test",
-    "items": [
-        { "product_id": 999, "quantity": 1 }
-    ]
-}
-
-### Facturas - Anular (Admin) - Correcto
-PATCH http://localhost:3000/api/v1/invoices/1/void
-
-### Facturas - Anular - Error: factura ya anulada
-PATCH http://localhost:3000/api/v1/invoices/5/void
-
-### Facturas - Anular - Error: factura inexistente
-PATCH http://localhost:3000/api/v1/invoices/999/void
-
-### ==================== AUTH ====================
-
-### Auth - Login - Correcto (Admin)
+### Auth - Login Admin (guardar token)
+# @name loginAdmin
 POST http://localhost:3000/api/v1/auth/login
 Content-Type: application/json
 
@@ -218,7 +13,8 @@ Content-Type: application/json
     "password": "123456"
 }
 
-### Auth - Login - Correcto (Cajero)
+### Auth - Login Cajero (guardar token)
+# @name loginCajero
 POST http://localhost:3000/api/v1/auth/login
 Content-Type: application/json
 
@@ -227,7 +23,7 @@ Content-Type: application/json
     "password": "123456"
 }
 
-### Auth - Login - Error: credenciales inválidas
+### Auth - Login - Error 401: contraseña incorrecta
 POST http://localhost:3000/api/v1/auth/login
 Content-Type: application/json
 
@@ -236,7 +32,7 @@ Content-Type: application/json
     "password": "wrongpassword"
 }
 
-### Auth - Login - Error: usuario no existe
+### Auth - Login - Error 404: usuario no existe
 POST http://localhost:3000/api/v1/auth/login
 Content-Type: application/json
 
@@ -254,3 +50,268 @@ Content-Type: application/json
     "email": "nuevo@factura.com",
     "password": "123456"
 }
+
+### ==================== PRODUCTOS ====================
+
+### Productos - Listar todos (sin auth)
+GET http://localhost:3000/api/v1/products
+
+### Productos - Crear (Admin) - Correcto
+POST http://localhost:3000/api/v1/products
+Authorization: Bearer {{loginAdmin.response.body.data.token}}
+Content-Type: application/json
+
+{
+    "code": "PROD-100",
+    "name": "Producto de prueba",
+    "price": 99.99,
+    "stock": 10
+}
+
+### Productos - Crear - Error 403: Cajero sin permisos
+POST http://localhost:3000/api/v1/products
+Authorization: Bearer {{loginCajero.response.body.data.token}}
+Content-Type: application/json
+
+{
+    "code": "PROD-403",
+    "name": "Intento cajero",
+    "price": 50,
+    "stock": 5
+}
+
+### Productos - Crear - Error 401: sin token
+POST http://localhost:3000/api/v1/products
+Content-Type: application/json
+
+{
+    "code": "PROD-401",
+    "name": "Sin token",
+    "price": 50,
+    "stock": 5
+}
+
+### Productos - Crear - Error: campo faltante (sin name)
+POST http://localhost:3000/api/v1/products
+Authorization: Bearer {{loginAdmin.response.body.data.token}}
+Content-Type: application/json
+
+{
+    "code": "PROD-101",
+    "price": 50
+}
+
+### Productos - Crear - Error: campo extra (strict)
+POST http://localhost:3000/api/v1/products
+Authorization: Bearer {{loginAdmin.response.body.data.token}}
+Content-Type: application/json
+
+{
+    "code": "PROD-102",
+    "name": "Test",
+    "price": 50,
+    "stock": 5,
+    "extra": "no deberia estar"
+}
+
+### Productos - Crear - Error: precio negativo
+POST http://localhost:3000/api/v1/products
+Authorization: Bearer {{loginAdmin.response.body.data.token}}
+Content-Type: application/json
+
+{
+    "code": "PROD-103",
+    "name": "Test",
+    "price": -10,
+    "stock": 5
+}
+
+### Productos - Crear - Error: stock como string
+POST http://localhost:3000/api/v1/products
+Authorization: Bearer {{loginAdmin.response.body.data.token}}
+Content-Type: application/json
+
+{
+    "code": "PROD-104",
+    "name": "Test",
+    "price": 50,
+    "stock": "diez"
+}
+
+### Productos - Actualizar stock (Admin) - Correcto
+PATCH http://localhost:3000/api/v1/products/1/stock
+Authorization: Bearer {{loginAdmin.response.body.data.token}}
+Content-Type: application/json
+
+{
+    "stock_to_add": 5
+}
+
+### Productos - Actualizar stock - Error 403: Cajero
+PATCH http://localhost:3000/api/v1/products/1/stock
+Authorization: Bearer {{loginCajero.response.body.data.token}}
+Content-Type: application/json
+
+{
+    "stock_to_add": 5
+}
+
+### Productos - Actualizar stock - Error: body vacío
+PATCH http://localhost:3000/api/v1/products/1/stock
+Authorization: Bearer {{loginAdmin.response.body.data.token}}
+Content-Type: application/json
+
+{}
+
+### Productos - Actualizar stock - Error: string en vez de número
+PATCH http://localhost:3000/api/v1/products/1/stock
+Authorization: Bearer {{loginAdmin.response.body.data.token}}
+Content-Type: application/json
+
+{
+    "stock_to_add": "cinco"
+}
+
+### Productos - Actualizar stock - Error: campo extra
+PATCH http://localhost:3000/api/v1/products/1/stock
+Authorization: Bearer {{loginAdmin.response.body.data.token}}
+Content-Type: application/json
+
+{
+    "stock_to_add": 5,
+    "extra": "no deberia"
+}
+
+### ==================== FACTURAS ====================
+
+### Facturas - Listar todas (cualquier autenticado)
+GET http://localhost:3000/api/v1/invoices
+Authorization: Bearer {{loginCajero.response.body.data.token}}
+
+### Facturas - Obtener por ID
+GET http://localhost:3000/api/v1/invoices/1
+Authorization: Bearer {{loginCajero.response.body.data.token}}
+
+### Facturas - Crear - Correcto
+POST http://localhost:3000/api/v1/invoices
+Authorization: Bearer {{loginCajero.response.body.data.token}}
+Content-Type: application/json
+
+{
+    "customer_name": "Cliente Prueba",
+    "customer_rtn_id": "08011990123456",
+    "items": [
+        { "product_id": 1, "quantity": 1 },
+        { "product_id": 2, "quantity": 3 }
+    ]
+}
+
+### Facturas - Crear - Correcto (sin RTN, default CF)
+POST http://localhost:3000/api/v1/invoices
+Authorization: Bearer {{loginCajero.response.body.data.token}}
+Content-Type: application/json
+
+{
+    "customer_name": "Cliente Sin RTN",
+    "items": [
+        { "product_id": 3, "quantity": 2 }
+    ]
+}
+
+### Facturas - Crear - Error: sin items
+POST http://localhost:3000/api/v1/invoices
+Authorization: Bearer {{loginCajero.response.body.data.token}}
+Content-Type: application/json
+
+{
+    "customer_name": "Cliente Prueba",
+    "items": []
+}
+
+### Facturas - Crear - Error: sin customer_name
+POST http://localhost:3000/api/v1/invoices
+Authorization: Bearer {{loginCajero.response.body.data.token}}
+Content-Type: application/json
+
+{
+    "items": [
+        { "product_id": 1, "quantity": 1 }
+    ]
+}
+
+### Facturas - Crear - Error: product_id como string
+POST http://localhost:3000/api/v1/invoices
+Authorization: Bearer {{loginCajero.response.body.data.token}}
+Content-Type: application/json
+
+{
+    "customer_name": "Test",
+    "items": [
+        { "product_id": "uno", "quantity": 1 }
+    ]
+}
+
+### Facturas - Crear - Error: quantity negativa
+POST http://localhost:3000/api/v1/invoices
+Authorization: Bearer {{loginCajero.response.body.data.token}}
+Content-Type: application/json
+
+{
+    "customer_name": "Test",
+    "items": [
+        { "product_id": 1, "quantity": -1 }
+    ]
+}
+
+### Facturas - Crear - Error: campo extra en body
+POST http://localhost:3000/api/v1/invoices
+Authorization: Bearer {{loginCajero.response.body.data.token}}
+Content-Type: application/json
+
+{
+    "customer_name": "Test",
+    "items": [
+        { "product_id": 1, "quantity": 1 }
+    ],
+    "extra": "no deberia"
+}
+
+### Facturas - Crear - Error: stock insuficiente
+POST http://localhost:3000/api/v1/invoices
+Authorization: Bearer {{loginCajero.response.body.data.token}}
+Content-Type: application/json
+
+{
+    "customer_name": "Cliente Prueba",
+    "items": [
+        { "product_id": 1, "quantity": 999 }
+    ]
+}
+
+### Facturas - Crear - Error: producto inexistente
+POST http://localhost:3000/api/v1/invoices
+Authorization: Bearer {{loginCajero.response.body.data.token}}
+Content-Type: application/json
+
+{
+    "customer_name": "Test",
+    "items": [
+        { "product_id": 999, "quantity": 1 }
+    ]
+}
+
+### Facturas - Anular (Admin) - Correcto
+PATCH http://localhost:3000/api/v1/invoices/1/void
+Authorization: Bearer {{loginAdmin.response.body.data.token}}
+
+### Facturas - Anular - Error 403: Cajero sin permisos
+PATCH http://localhost:3000/api/v1/invoices/2/void
+Authorization: Bearer {{loginCajero.response.body.data.token}}
+
+### Facturas - Anular - Error: factura ya anulada
+PATCH http://localhost:3000/api/v1/invoices/5/void
+Authorization: Bearer {{loginAdmin.response.body.data.token}}
+
+### Facturas - Anular - Error: factura inexistente
+PATCH http://localhost:3000/api/v1/invoices/999/void
+Authorization: Bearer {{loginAdmin.response.body.data.token}}
